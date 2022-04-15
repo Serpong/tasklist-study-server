@@ -12,9 +12,9 @@ const TokenManager = (tokenType) => {
 	const _tokenExp 	= (_tokenType=="accessToken"? process.env.JWT_ACCESS_EXP 	: process.env.JWT_REFRESH_EXP);
 	
 	const _this = {
-		createToken: (userId) => {
+		createToken: (userUid, userRole) => {
 			return jwt.sign({
-				userId: userId
+				userUid, userRole
 			}, _tokenSecret, {
 				expiresIn: _tokenExp
 			});
@@ -22,19 +22,23 @@ const TokenManager = (tokenType) => {
 		verifyToken: (token) => {
 			try{
 				const tokenDecoded = jwt.verify(token, _tokenSecret);
-				return tokenDecoded;
+				if(tokenDecoded && tokenDecoded.userUid && tokenDecoded.userRole)
+					return tokenDecoded;
+				else
+					return false;
 			}
 			catch(e){
 				return false;
 			}
 		},
-		setToken: (req, res, userId)=>{
-			const newToken = _this.createToken(userId);
+		setToken: (req, res, userUid, userRole)=>{
+			const newToken = _this.createToken(userUid, userRole);
 			req.cookies[_tokenType]=newToken;
 			res.cookie( _tokenType, newToken);
 		}
 	};
 	return _this;
 }
+
 
 module.exports = { TokenManager };

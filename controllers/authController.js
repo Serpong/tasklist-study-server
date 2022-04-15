@@ -19,8 +19,8 @@ module.exports.userLogin = [
 		if(!userRow)
 			return res.status(401).json({msg: "아이디나 패스워드가 틀렸습니다."});
 		
-		accessTokenManager.setToken(req, res, userRow.userId);
-		refreshTokenManager.setToken(req, res, userRow.userId);
+		accessTokenManager.setToken(req, res, userRow._id, userRow.userRole);
+		refreshTokenManager.setToken(req, res, userRow._id, userRow.userRole);
 		
 		return res.status(200).json({ msg: "로그인이 완료되었습니다." });
 	}
@@ -34,7 +34,7 @@ module.exports.userRegister = [
 	]),
 	async (req,res)=>{
 		const userRow = await User.findUserById(req.body.userId);
-		if(userRow != null) return res.status(401).json({msg: "이미 존재하는 ID입니다."});
+		if(userRow != null) return res.status(409).json({msg: "이미 존재하는 ID입니다."});
 
 		const newUser = new User({
 			userId:req.body.userId,

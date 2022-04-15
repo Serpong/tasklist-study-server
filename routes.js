@@ -1,8 +1,8 @@
 module.exports = (router) => {
 	
-	// root tmp
-	const { verifyTokenMiddleware } = require('./middlewares/authMiddleware');
-	router.get('/', verifyTokenMiddleware, (req, res) => res.status(400).json({msg:"what do you want"}) );
+	// for dev
+	const devController = require('./controllers/devController');
+	router.get('/', ...devController.devMain);
 
 	// /auth
 	const authController = require('./controllers/authController');
@@ -10,7 +10,7 @@ module.exports = (router) => {
 	router.post("/auth/user-register", ...authController.userRegister);
 	router.post("/auth/user-logout", ...authController.userLogout);
 
-	// /challenges
+	// /photos
 	const photoController = require('./controllers/photoController');
 	router.post('/photo', photoController.insertPhoto);
 

@@ -6,11 +6,11 @@ const { validate } = require('../utils/validatorUtil');
 const multer = require('multer');
 const uploader = multer({ dest: process.env.PATH_UPLOADS, limits: { fileSize: 5 * 1024 * 1024 } });
 
-const { verifyTokenMiddleware } = require('../middlewares/authMiddleware');
+const { permRequired } = require('../middlewares/authMiddleware');
 // const { m2bMiddleware } = require('../middlewares/m2bMiddleware');
 
 module.exports.insertPhoto = [
-	verifyTokenMiddleware,
+	permRequired("user"),
 
 	uploader.single('img'), // 이게 formdata -> req.body 생성해줌. 개꿀
 
