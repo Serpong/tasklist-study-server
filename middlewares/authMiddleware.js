@@ -12,7 +12,7 @@ const setUserData = async (req, res)=>{
 		return res.status(500).json({msg: "토큰 인증이 필요합니다."});
 	
 	if(res.locals.userData)
-		return next();
+		return true;
 		
 	const userRow = await User.findUserByUid(res.locals.userUid);
 	if(!userRow)
