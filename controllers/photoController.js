@@ -2,7 +2,7 @@ const User = require('../models/userModel')
 const Photo = require('../models/photoModel');
 
 const { body, check } = require('express-validator');
-const { validate } = require('../utils/validatorUtil');
+const { validate, idValidCheck } = require('../utils/validatorUtil');
 const multer = require('multer');
 const uploader = multer({ dest: process.env.PATH_UPLOADS, limits: { fileSize: 5 * 1024 * 1024 } });
 
@@ -44,12 +44,11 @@ module.exports = {
 	],
 	deletePhoto: [
 		permRequired("user", true),
-		validate([
-			body('photoId').notEmpty().withMessage("photoId항목이 필요합니다."),
-		]),
+
+		idValidCheck,
 
 		async (req, res)=>{
-			const photoRow = await Photo.findOne({_id:req.body.photoId});
+			const photoRow = await Photo.findOne({_id:req.params.id});
 			if(photoRow == null)
 				return res.status(200).json({ msg:"이미 삭제되었거나 존재하지 않는 사진입니다." });
 

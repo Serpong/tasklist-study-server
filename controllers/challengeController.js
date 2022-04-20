@@ -1,5 +1,5 @@
 const { permRequired } = require("../middlewares/authMiddleware");
-const { validate } = require('../utils/validatorUtil');
+const { validate, idValidCheck } = require('../utils/validatorUtil');
 const Challenge = require("../models/challengeModel");
 const { body } = require("express-validator");
 
@@ -8,8 +8,9 @@ const selectColumn = ({subject,description,startTime,endTime}) =>
 
 module.exports = {
 	getChallenge:[
+		idValidCheck,
 		async (req,res)=>{
-			const challengeRow = await Challenge.findOne({_id:req.params.challenge_id});
+			const challengeRow = await Challenge.findOne({_id:req.params.id});
 
 			if(challengeRow == null)
 				return res.status(404).json({ msg:"존재하지 않는 챌린지입니다."});
@@ -62,14 +63,11 @@ module.exports = {
 	],
 	deleteChallenge:[
 		permRequired("admin"),
-		
-		validate([
-			body('challengeId').notEmpty().withMessage("challengeId 항목이 필요합니다."),
-		]),
 
+		idValidCheck,
 		async (req,res)=>{
 			try{
-				const challengeRow = await Challenge.findOneAndDelete({_id:req.body.challengeId});
+				const challengeRow = await Challenge.findOneAndDelete({_id:req.params.id});
 				if(challengeRow != null)
 					return res.status(200).json({ msg:"1개의 챌린지가 삭제되었습니다." });
 				else
