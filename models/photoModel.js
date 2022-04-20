@@ -1,18 +1,15 @@
 const mongoose = require('mongoose');
-const User = require('./userModel')
 
-//이미지파일 모델 따로 만들어야 할 듯
+const File = require('./fileModel')
+
 const PhotoSchema = new mongoose.Schema({
 	photoSubject: {
 		type:String,
 		required:true,
 	},
-	fileName: {
-		type:String,
-		required:true,
-	},
-	originalName: {
-		type:String,
+	file: {
+		type:mongoose.Schema.Types.ObjectId,
+		ref:"File",
 		required:true,
 	},
 	user: {
@@ -29,10 +26,19 @@ const PhotoSchema = new mongoose.Schema({
 
 
 
-PhotoSchema.statics.insertPhoto = function({photoSubject, fileName, originalName, user, challenge}){
-	const inserted = new this( {photoSubject, fileName, originalName, user, challenge} ).save();
+PhotoSchema.statics.insertPhoto = async function({photoSubject, fileData, user_id, challenge_id}){
+	const fileRow = await File.insertFile({fileData, user_id});
+	if(fileRow == null)
+		return null;
+
+	const inserted = new this({
+		photoSubject,
+		file		: fileRow._id,
+		user		: user_id,
+		challenge	: challenge_id,
+	}).save();
+
 	return inserted;
 }
-
 
 module.exports = mongoose.model("Photo", PhotoSchema);

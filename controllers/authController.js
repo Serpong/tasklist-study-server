@@ -40,6 +40,7 @@ module.exports.userRegister = [
 			userId:req.body.userId,
 			userPass:req.body.userPass,
 			userName:req.body.userName,
+			userRole:'user',
 		});
 		try{
 			await newUser.save();

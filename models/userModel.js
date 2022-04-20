@@ -6,15 +6,15 @@ const UserSchema = new mongoose.Schema({
 	userId: 	{type:String, required:true, unique:true},
 	userPass: 	{type:String, required:true},
 	userName: 	{type:String, required:true},
-	userRole: 	{type:String, required:true, enum:userRoleList, default:"user"},
+	userRole: 	{type:String, required:true, enum:userRoleList},
 },{timestamps:true});
 
 UserSchema.statics.findUserById = function(userId){
 	return this.findOne({userId});
 }
 
-UserSchema.statics.findUserByUid = function(userUid){
-	return this.findOne({userUid});
+UserSchema.statics.findUserByUid = function(user_id){
+	return this.findOne({user_id});
 }
 
 UserSchema.statics.findUserByIdPw = function(userId, userPass){

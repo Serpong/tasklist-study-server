@@ -12,9 +12,9 @@ const TokenManager = (tokenType) => {
 	const _tokenExp 	= (_tokenType=="accessToken"? process.env.JWT_ACCESS_EXP 	: process.env.JWT_REFRESH_EXP);
 	
 	const _this = {
-		createToken: (userUid, userRole) => {
+		createToken: (user_id, userRole) => {
 			return jwt.sign({
-				userUid, userRole
+				user_id, userRole
 			}, _tokenSecret, {
 				expiresIn: _tokenExp
 			});
@@ -22,7 +22,7 @@ const TokenManager = (tokenType) => {
 		verifyToken: (token) => {
 			try{
 				const tokenDecoded = jwt.verify(token, _tokenSecret);
-				if(tokenDecoded && tokenDecoded.userUid && tokenDecoded.userRole)
+				if(tokenDecoded && tokenDecoded.user_id && tokenDecoded.userRole)
 					return tokenDecoded;
 				else
 					return false;
@@ -31,8 +31,8 @@ const TokenManager = (tokenType) => {
 				return false;
 			}
 		},
-		setToken: (req, res, userUid, userRole)=>{
-			const newToken = _this.createToken(userUid, userRole);
+		setToken: (req, res, user_id, userRole)=>{
+			const newToken = _this.createToken(user_id, userRole);
 			req.cookies[_tokenType]=newToken;
 			res.cookie( _tokenType, newToken);
 		}
