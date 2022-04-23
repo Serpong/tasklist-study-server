@@ -19,5 +19,5 @@ mongoose.connect(process.env.DB_ADDR)
 
 app.set('appPath', __dirname);
 
-app.use('/', require('./routes')(express.Router()));
+app.use('/api', require('./routes')(express.Router()));
 app.listen(3000, ()=>console.log("SERVER STARTED"));
