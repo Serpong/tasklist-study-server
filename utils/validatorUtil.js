@@ -28,6 +28,24 @@ module.exports.idValidCheck = (req, res, next) => {
 	return res.status(400).json({msg:"비정상적인 id값입니다."});
 };
 
+module.exports.getFields = (fields) => {
+	if(!fields) return [];
+
+	return fields.split(',').map((data)=>{
+		return data.trim();
+	});
+};
+
+
+module.exports.selectColumn = (row, selectlist, whitelist) => {
+	let filteredRow = {};
+	for (let i = 0; i < whitelist.length; i++) {
+		if(!selectlist.includes(whitelist[i])) continue;
+		filteredRow[whitelist[i]] = row[whitelist[i]]??null;
+	}
+	return filteredRow;
+};
+
 
 // module.exports.idValidCheck = (req, res, next) => {
 	

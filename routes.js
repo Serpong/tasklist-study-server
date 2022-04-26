@@ -12,7 +12,8 @@ module.exports = (router) => {
 
 	// /photos
 	const photoController = require('./controllers/photoController');
-	// router.get('/photo/:photo_id',			...photoController.getPhoto);
+	router.get('/photo',						...photoController.listPhoto);
+	router.get('/photo/:id',					...photoController.getPhoto);
 	router.post('/photo',						...photoController.insertPhoto);
 	router.delete('/photo/:id',					...photoController.deletePhoto);
 

@@ -2,20 +2,48 @@ const User = require('../models/userModel')
 const Photo = require('../models/photoModel');
 
 const { body, check } = require('express-validator');
-const { validate, idValidCheck } = require('../utils/validatorUtil');
+const { validate, idValidCheck, getFields, selectColumn } = require('../utils/validatorUtil');
 const multer = require('multer');
 const uploader = multer({ dest: process.env.PATH_UPLOADS, limits: { fileSize: 5 * 1024 * 1024 } });
 
 const { permRequired } = require('../middlewares/authMiddleware');
 
 module.exports = {
+	getPhoto:[
+		idValidCheck,
+		async (req, res, next)=>{
+
+			const photoRow = await Photo.findOne({_id:req.params.id});
+			if(photoRow == null)
+				return res.status(200).json({ msg:"존재하지 않는 사진입니다." });
+				
+			
+			let photos = {};
+			photos[photoRow._id] = selectColumn(photoRow, getFields(req.query.fields), Photo.getWhitelist());
+
+			return res.status(200).json({ msg:"success", data:photos });
+		}
+	],
+	listPhoto:[
+		async (req, res, next)=>{
+			const photoRows = await Photo.find({});
+			
+			let photos = {};
+			photoRows.forEach(function(photoRow) {
+				photos[photoRow._id] = selectColumn(photoRow);
+			});
+
+			return res.status(200).json({ msg:"success", data:photos });
+		}
+	],
 	insertPhoto:[
 		permRequired("user", true),
 
 		uploader.single('img'), // 이게 formdata -> req.body 생성해줌. 개꿀
 
 		validate([
-			body('photoSubject').notEmpty().withMessage("제목을 입력해주세요."),
+			// body('subject').notEmpty().withMessage("제목을 입력해주세요."),
+			// body('description').notEmpty().withMessage("설명을 입력해주세요."),
 		]),
 
 
@@ -30,7 +58,8 @@ module.exports = {
 			}
 
 			const inserted = await Photo.insertPhoto({
-				photoSubject	: req.body.photoSubject,
+				// subject		: req.body.subject,
+				description		: req.body.description,
 				fileData		: req.file,
 				user_id			: res.locals.user_id,
 				challenge_id	: challenge_id,

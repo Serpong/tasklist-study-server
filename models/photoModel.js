@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const File = require('./fileModel')
 
 const PhotoSchema = new mongoose.Schema({
-	photoSubject: {
+	description: {
 		type:String,
-		required:true,
+		// required:true,
 	},
 	file: {
 		type:mongoose.Schema.Types.ObjectId,
@@ -24,15 +24,19 @@ const PhotoSchema = new mongoose.Schema({
 	},
 },{timestamps:true});
 
+PhotoSchema.statics.getWhitelist = function(){
+	return ["description", "file", "user", "challenge"];
+}
 
 
-PhotoSchema.statics.insertPhoto = async function({photoSubject, fileData, user_id, challenge_id}){
+
+PhotoSchema.statics.insertPhoto = async function({description, fileData, user_id, challenge_id}){
 	const fileRow = await File.insertFile({fileData, user_id});
 	if(fileRow == null)
 		return null;
 
 	const inserted = new this({
-		photoSubject,
+		description,
 		file		: fileRow._id,
 		user		: user_id,
 		challenge	: challenge_id,
@@ -40,5 +44,6 @@ PhotoSchema.statics.insertPhoto = async function({photoSubject, fileData, user_i
 
 	return inserted;
 }
+
 
 module.exports = mongoose.model("Photo", PhotoSchema);
