@@ -22,6 +22,7 @@ const TokenManager = (tokenType) => {
 		verifyToken: (token) => {
 			try{
 				const tokenDecoded = jwt.verify(token, _tokenSecret);
+				// console.log(tokenDecoded);
 				if(tokenDecoded && tokenDecoded.user_id && tokenDecoded.userRole)
 					return tokenDecoded;
 				else

@@ -33,9 +33,9 @@ const setUserData = async (req, res)=>{
 module.exports.verifyTokenMW = (req, res, next)=>{
 	res.locals.isLoggedIn = false;
 	if(!req.cookies.accessToken)
-		return next();
-
-
+	return next();
+	
+	
 	let tokenData = accessTokenManager.verifyToken(req.cookies.accessToken);
 	if(!tokenData){
 		let tokenData = refreshTokenManager.verifyToken(req.cookies.refreshToken);

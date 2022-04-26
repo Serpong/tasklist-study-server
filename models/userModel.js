@@ -14,7 +14,7 @@ UserSchema.statics.findUserById = function(userId){
 }
 
 UserSchema.statics.findUserByUid = function(user_id){
-	return this.findOne({user_id});
+	return this.findOne({_id:user_id});
 }
 
 UserSchema.statics.findUserByIdPw = function(userId, userPass){
