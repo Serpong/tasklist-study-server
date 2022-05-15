@@ -3,7 +3,7 @@ const User = require('../models/userModel');
 const { body } = require('express-validator');
 const { validate } = require('../utils/validatorUtil');
 const { TokenManager } = require('../utils/authUtil');
-const { responseError } = require('../utils/responseUtil');
+const { responseError, responseSuccess } = require('../utils/responseUtil');
 
 const accessTokenManager = TokenManager("accessToken");
 const refreshTokenManager = TokenManager("refreshToken");
@@ -63,6 +63,6 @@ module.exports.userLogout = [
 	(req,res)=>{
 		res.clearCookie('accessToken');
 		res.clearCookie('refreshToken');
-		res.status('200').json({msg:"로그아웃 되었습니다."});
+		return responseSuccess(res, {msg:"로그아웃 되었습니다."});
 	}
 ];
