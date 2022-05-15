@@ -1,9 +1,6 @@
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
-
-const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
-	return { errorType:"validation", param, msg }
-};
+const { responseError, validationErrorFormatter, errorFormatter } = require('./responseUtil');
 
 
 module.exports.validate = (validations) => {
@@ -17,7 +14,7 @@ module.exports.validate = (validations) => {
 		if (errors.isEmpty())
 			return next();
 
-		return res.status(400).json({ errors: errors.formatWith(errorFormatter).array() });
+		return responseError(res, errors.formatWith(validationErrorFormatter).array()[0]);
 	};
 };
 
@@ -25,15 +22,12 @@ module.exports.idValidCheck = (req, res, next) => {
 	if(req.params.id && mongoose.isValidObjectId(req.params.id))
 		return next();
 
-	return res.status(400).json({msg:"비정상적인 id값입니다."});
+	return responseError(res, {errorType:"validation", param:'id', msg:'invalid id'});
 };
 
 module.exports.getFields = (fields) => {
 	if(!fields) return [];
-
-	return fields.split(',').map((data)=>{
-		return data.trim();
-	});
+	return fields.split(',').map(data=>data.trim());
 };
 
 

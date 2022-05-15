@@ -3,6 +3,7 @@ const User = require('../models/userModel');
 const { body } = require('express-validator');
 const { validate } = require('../utils/validatorUtil');
 const { TokenManager } = require('../utils/authUtil');
+const { responseError } = require('../utils/responseUtil');
 
 const accessTokenManager = TokenManager("accessToken");
 const refreshTokenManager = TokenManager("refreshToken");
@@ -17,7 +18,7 @@ module.exports.userLogin = [
 	async (req, res, next)=>{
 		const userRow = await User.findUserByIdPw(req.body.userId, req.body.userPass);
 		if(!userRow)
-			return res.status(401).json({msg: "아이디나 패스워드가 틀렸습니다."});
+			return responseError(res, {errorType:"invalidData", msg: "아이디나 패스워드가 틀렸습니다."});
 		
 		accessTokenManager.setToken(req, res, userRow._id, userRow.userRole);
 		refreshTokenManager.setToken(req, res, userRow._id, userRow.userRole);
