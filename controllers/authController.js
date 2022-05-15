@@ -10,6 +10,13 @@ const refreshTokenManager = TokenManager("refreshToken");
 
 
 
+module.exports.loginCheck = [
+	async (req, res, next)=>{
+		return res.status(200).json({ data:{isLoggedIn:res.locals.isLoggedIn}, msg: "데이터를 성공적으로 불러왔습니다." });
+	}
+];
+
+
 module.exports.userLogin = [
 	validate([
 		body('userId').notEmpty().withMessage("아이디를 입력해주세요."),
