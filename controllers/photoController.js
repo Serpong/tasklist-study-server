@@ -37,7 +37,7 @@ module.exports = {
 		}
 	],
 	insertPhoto:[
-		permRequired("user", true),
+		permRequired("user"),
 
 		uploader.single('img'), // 이게 formdata -> req.body 생성해줌. 개꿀
 

@@ -33,7 +33,7 @@ const setUserData = async (req, res)=>{
 module.exports.verifyTokenMW = (req, res, next)=>{
 	res.locals.isLoggedIn = false;
 	if(!req.cookies.accessToken)
-	return next();
+		return next();
 	
 	
 	let tokenData = accessTokenManager.verifyToken(req.cookies.accessToken);
@@ -54,7 +54,7 @@ module.exports.verifyTokenMW = (req, res, next)=>{
 	return next();
 }
 
-//doSetUserData: 유저데이터 db 검증하고 req.locals에 저장
+//doSetUserData: 유저데이터 db 검증하고 user_id이외의 데이터 req.locals에 저장
 module.exports.permRequired = (requiredRoleText, doSetUserData)=> async (req, res, next)=> {
 	if(!res.locals.isLoggedIn)
 		return res.status(401).json({msg:'로그인이 필요합니다.'});
@@ -75,5 +75,5 @@ module.exports.permRequired = (requiredRoleText, doSetUserData)=> async (req, re
 	if(doSetUserData)
 		await setUserData(req, res);
 	
-	next();
+	return next();
 }

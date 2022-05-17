@@ -19,7 +19,7 @@ const FileSchema = new mongoose.Schema({
 
 
 FileSchema.statics.insertFile = function({fileData, user_id}){
-	if(fileData.filename == null || fileData.originalname == null)
+	if(!fileData || fileData.filename == null || fileData.originalname == null)
 		return null;
 
 	const inserted = new this({

@@ -11,6 +11,13 @@ module.exports = (router) => {
 	router.post("/auth/user-register",			...authController.userRegister);
 	router.post("/auth/user-logout",			...authController.userLogout);
 
+	// /folders
+	const folderController = require('./controllers/folderController');
+	router.get('/folder',						...folderController.listFolder);
+	router.get('/folder/:id',					...folderController.getFolder);
+	router.post('/folder',						...folderController.insertFolder);
+	router.delete('/folder/:id',					...folderController.deleteFolder);
+
 	// /photos
 	const photoController = require('./controllers/photoController');
 	router.get('/photo',						...photoController.listPhoto);
