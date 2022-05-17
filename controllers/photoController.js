@@ -10,7 +10,7 @@ const { permRequired } = require('../middlewares/authMiddleware');
 
 module.exports = {
 	getPhoto:[
-		idValidCheck,
+		idValidCheck(),
 		async (req, res, next)=>{
 
 			const photoRow = await Photo.findOne({_id:req.params.id});
@@ -74,7 +74,7 @@ module.exports = {
 	deletePhoto: [
 		permRequired("user", true),
 
-		idValidCheck,
+		idValidCheck(),
 
 		async (req, res)=>{
 			const photoRow = await Photo.findOne({_id:req.params.id});

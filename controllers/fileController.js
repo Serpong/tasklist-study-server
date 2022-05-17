@@ -3,7 +3,7 @@ const { idValidCheck } = require('../utils/validatorUtil');
 
 module.exports = {
 	showImage:[
-		idValidCheck,
+		idValidCheck(),
 		async (req, res, next)=>{
 			
 			const fileRow = await File.findOne({_id:req.params.id});

@@ -12,7 +12,7 @@ const selectColumn = ({title,description}) =>
 module.exports = {
 	getFolder:[
 		permRequired("user"),
-		idValidCheck,
+		idValidCheck(),
 		async (req,res)=>{
 			const folderRow = await Folder.findOne({_id:req.params.id, user:res.locals.user_id});
 
@@ -65,7 +65,7 @@ module.exports = {
 	deleteFolder:[
 		permRequired("user"),
 
-		idValidCheck,
+		idValidCheck(),
 		async (req,res)=>{
 			try{
 				const folderRow = await Folder.findOneAndDelete({_id:req.params.id, user:res.locals.user_id});

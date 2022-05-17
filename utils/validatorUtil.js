@@ -18,11 +18,13 @@ module.exports.validate = (validations) => {
 	};
 };
 
-module.exports.idValidCheck = (req, res, next) => {
-	if(req.params.id && mongoose.isValidObjectId(req.params.id))
+module.exports.idValidCheck = (idName)=>(req, res, next) => {
+	const _id = (idName)?req.body[idName]:req.params.id;
+
+	if(_id && mongoose.isValidObjectId(_id))
 		return next();
 
-	return responseError(res, {errorType:"validation", param:'id', msg:'invalid id'});
+	return responseError(res, {errorType:"validation", param:(idName||'id'), msg:'invalid id'});
 };
 
 module.exports.getFields = (fields) => {

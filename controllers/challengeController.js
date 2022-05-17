@@ -8,7 +8,7 @@ const selectColumn = ({subject,description,startTime,endTime}) =>
 
 module.exports = {
 	getChallenge:[
-		idValidCheck,
+		idValidCheck(),
 		async (req,res)=>{
 			const challengeRow = await Challenge.findOne({_id:req.params.id});
 
@@ -64,7 +64,7 @@ module.exports = {
 	deleteChallenge:[
 		permRequired("admin"),
 
-		idValidCheck,
+		idValidCheck(),
 		async (req,res)=>{
 			try{
 				const challengeRow = await Challenge.findOneAndDelete({_id:req.params.id});
