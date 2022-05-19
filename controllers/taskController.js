@@ -37,6 +37,24 @@ module.exports = {
 			return responseSuccess(res, { msg:"success", data:tasks });
 		}
 	],
+	listTasksByFolder:[
+		permRequired("user"),
+		async (req,res)=>{
+			const folderRow = await Folder.findOne({_id:req.params.id, user:res.locals.user_id});
+
+			if(folderRow == null)
+				return responseError(res, { msg:"존재하지 않는 폴더입니다."}, 404);
+				
+			const taskRows = await Task.find({user:res.locals.user_id, folder:req.params.id});
+			
+			let tasks = {};
+			taskRows.forEach(function(taskRow) {
+				tasks[taskRow._id] = selectColumn(taskRow);
+			});
+
+			return responseSuccess(res, { msg:"success", data:tasks });
+		}
+	],
 	insertTask:[
 		permRequired("user"),
 

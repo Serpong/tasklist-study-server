@@ -1,5 +1,6 @@
 const { permRequired } = require("../middlewares/authMiddleware");
 const { validate, idValidCheck } = require('../utils/validatorUtil');
+const Task = require("../models/taskModel");
 const Folder = require("../models/folderModel");
 const { body } = require("express-validator");
 const { responseError, responseSuccess } = require("../utils/responseUtil");

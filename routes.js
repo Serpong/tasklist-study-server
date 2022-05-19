@@ -16,14 +16,15 @@ module.exports = (router) => {
 	router.get('/folder',						...folderController.listFolder);
 	router.get('/folder/:id',					...folderController.getFolder);
 	router.post('/folder',						...folderController.insertFolder);
-	router.delete('/folder/:id',					...folderController.deleteFolder);
-
+	router.delete('/folder/:id',				...folderController.deleteFolder);
+	
 	// /tasks
 	const taskController = require('./controllers/taskController');
-	router.get('/task',						...taskController.listTask);
-	router.get('/task/:id',					...taskController.getTask);
+	router.get('/task',							...taskController.listTask);
+	router.get('/task/:id',						...taskController.getTask);
 	router.post('/task',						...taskController.insertTask);
 	router.delete('/task/:id',					...taskController.deleteTask);
+	router.get('/folder/:id/tasks',				...taskController.listTasksByFolder);
 
 	// /photos
 	const photoController = require('./controllers/photoController');
