@@ -9,7 +9,7 @@ const FolderModel = new mongoose.Schema({
 	},
 	description: {
 		type:String,
-		required:true,
+		required:false,
 	},
 	thumb: {
 		type:mongoose.Schema.Types.ObjectId,

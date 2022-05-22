@@ -7,8 +7,8 @@ const { responseError, responseSuccess } = require("../utils/responseUtil");
 const multer = require("multer");
 const uploader = multer({ dest: process.env.PATH_UPLOADS, limits: { fileSize: 5 * 1024 * 1024 } });
 
-const selectColumn = ({title,description}) =>
-					 ({title,description});
+const selectColumn = ({_id, title, description, thumb}) =>
+					 ({_id, title, description, thumb});
 
 module.exports = {
 	getFolder:[
@@ -46,21 +46,22 @@ module.exports = {
 		
 		validate([
 			body('title')		.notEmpty().withMessage("title항목을 입력해주세요."),
-			body('description')	.notEmpty().withMessage("description항목을 입력해주세요."),
+			// body('description')	.notEmpty().withMessage("description항목을 입력해주세요."),
 		]),
 
 		async (req,res)=>{
 			try{
-				await Folder.insertFolder({
+				const newFolder = await Folder.insertFolder({
 					title		: req.body.title,
 					description	: req.body.description,
 					fileData	: req.file,
 					user_id		: res.locals.user_id,
 				});
+				return responseSuccess(res, { msg:"폴더가 추가되었습니다.", data: selectColumn(newFolder) });
+				
 			} catch(err) {
 				return responseError(res, { msg:"폴더 추가에 오류가 발생했습니다." });
 			}
-			return responseSuccess(res, { msg:"폴더가 추가되었습니다." });
 		}
 	],
 	deleteFolder:[
