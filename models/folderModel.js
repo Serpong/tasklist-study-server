@@ -41,5 +41,17 @@ FolderModel.statics.insertFolder = async function({title, description, fileData,
 	return inserted;
 }
 
+FolderModel.statics.format = function(folderRow){
+	let result = {
+		_id			: folderRow._id,
+		title		: folderRow.title,
+		description	: folderRow.description,
+		thumbUrl	: "/image/"+folderRow.thumb,
+		// user		: folderRow.user,
+	};
+
+	return result;
+}
+
 
 module.exports = mongoose.model("Folder", FolderModel);

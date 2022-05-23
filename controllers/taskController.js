@@ -5,8 +5,8 @@ const { body } = require("express-validator");
 const { responseError, responseSuccess } = require("../utils/responseUtil");
 const Folder = require("../models/folderModel");
 
-const selectColumn = ({content,}) =>
-					 ({content,});
+const selectColumn = ({_id, content,}) =>
+					 ({_id, content,});
 
 module.exports = {
 	getTask:[
@@ -70,14 +70,15 @@ module.exports = {
 				return responseError(res, { msg:"존재하지 않는 폴더입니다."});
 
 			try{
-				await Task.insertTask({
+				const taskRow = await Task.insertTask({
 					content		: req.body.content,
 					folder_id	: req.body.folder_id,
 				});
+
+				return responseSuccess(res, { msg:"태스크가 추가되었습니다.", data:selectColumn(taskRow) });
 			} catch(err) {
 				return responseError(res, { msg:"태스크 추가에 오류가 발생했습니다." });
 			}
-			return responseSuccess(res, { msg:"태스크가 추가되었습니다." });
 		}
 	],
 	deleteTask:[

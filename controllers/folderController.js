@@ -21,7 +21,7 @@ module.exports = {
 				return responseError(res, { msg:"존재하지 않는 폴더입니다."}, 404);
 
 			let folders = {};
-			folders[folderRow._id] = selectColumn(folderRow);
+			folders[folderRow._id] = Folder.format(folderRow);
 
 			return responseSuccess(res, { msg:"success", data:folders });
 		}
@@ -33,13 +33,16 @@ module.exports = {
 			
 			let folders = {};
 			folderRows.forEach(function(folderRow) {
-				folders[folderRow._id] = selectColumn(folderRow);
+				folders[folderRow._id] = Folder.format(folderRow);
 			});
 
 			return responseSuccess(res, { msg:"success", data:folders });
 		}
 	],
 	insertFolder:[
+		// (req,res)=>{
+		// 	res.status(200).send('ok');
+		// },
 		permRequired("user"),
 
 		uploader.single('thumb'), // 이게 formdata -> req.body 생성해줌. 개꿀
@@ -51,13 +54,13 @@ module.exports = {
 
 		async (req,res)=>{
 			try{
-				const newFolder = await Folder.insertFolder({
+				const folderRow = await Folder.insertFolder({
 					title		: req.body.title,
 					description	: req.body.description,
 					fileData	: req.file,
 					user_id		: res.locals.user_id,
 				});
-				return responseSuccess(res, { msg:"폴더가 추가되었습니다.", data: selectColumn(newFolder) });
+				return responseSuccess(res, { msg:"폴더가 추가되었습니다.", data: Folder.format(folderRow) });
 				
 			} catch(err) {
 				return responseError(res, { msg:"폴더 추가에 오류가 발생했습니다." });

@@ -5,7 +5,6 @@ module.exports = {
 	showImage:[
 		idValidCheck(),
 		async (req, res, next)=>{
-			
 			const fileRow = await File.findOne({_id:req.params.id});
 			
 			if(fileRow == null)
