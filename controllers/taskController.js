@@ -81,6 +81,36 @@ module.exports = {
 			}
 		}
 	],
+	editTask:[
+		permRequired("user"),
+
+		idValidCheck(),
+
+		validate([
+			body('content').notEmpty().withMessage("content항목을 입력해주세요."),
+		]),
+
+		async (req,res)=>{
+			const taskRow = await Task.findOne({_id:req.params.id});
+			if(!taskRow)
+				return responseError(res, { msg:"존재하지 않는 태스크입니다."});
+				
+			const folderRow = (await taskRow.populate('folder')).folder;
+			if(folderRow.user != res.locals.user_id)
+				return responseError(res, { msg:"해당 태스크에 권한이 없습니다."});
+
+			try{
+				taskRow.content = req.body.content;
+				
+				const result = await taskRow.save();
+				console.log(result);
+
+				return responseSuccess(res, { msg:"태스크가 수정되었습니다.", data:selectColumn(taskRow) });
+			} catch(err) {
+				return responseError(res, { msg:"태스크 수정에 오류가 발생했습니다." });
+			}
+		}
+	],
 	deleteTask:[
 		permRequired("user"),
 		idValidCheck(),

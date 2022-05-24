@@ -23,6 +23,7 @@ module.exports = (router) => {
 	router.get('/task',							...taskController.listTask);
 	router.get('/task/:id',						...taskController.getTask);
 	router.post('/task',						...taskController.insertTask);
+	router.post('/task/:id',					...taskController.editTask);
 	router.delete('/task/:id',					...taskController.deleteTask);
 	router.get('/folder/:id/tasks',				...taskController.listTasksByFolder);
 
