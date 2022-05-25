@@ -38,7 +38,7 @@ module.exports.verifyTokenMW = (req, res, next)=>{
 	
 	let tokenData = accessTokenManager.verifyToken(req.cookies.accessToken);
 	if(!tokenData){
-		let tokenData = refreshTokenManager.verifyToken(req.cookies.refreshToken);
+		tokenData = refreshTokenManager.verifyToken(req.cookies.refreshToken);
 		if(!tokenData)
 			return next();
 
@@ -46,7 +46,6 @@ module.exports.verifyTokenMW = (req, res, next)=>{
 		
 		accessTokenManager.setToken(req, res, tokenData.user_id, tokenData.userRole);
 	}
-
 	res.locals.isLoggedIn 	= true;
 	res.locals.user_id 		= tokenData.user_id;
 	res.locals.userRole 	= tokenData.userRole;
