@@ -9,6 +9,7 @@ const selectColumn = ({_id, content,}) =>
 					 ({_id, content,});
 
 module.exports = {
+
 	getTask:[
 		permRequired("user"),
 		idValidCheck(),
@@ -37,7 +38,7 @@ module.exports = {
 			return responseSuccess(res, { msg:"success", data:tasks });
 		}
 	],
-	listTasksByFolder:[
+	listTaskByFolder:[
 		permRequired("user"),
 		async (req,res)=>{
 			const folderRow = await Folder.findOne({_id:req.params.id, user:res.locals.user_id});

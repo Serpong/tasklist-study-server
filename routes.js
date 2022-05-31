@@ -1,8 +1,4 @@
 module.exports = (router) => {
-	
-	// for dev
-	// const devController = require('./controllers/devController');
-	// router.get('/',								...devController.devMain);
 
 	// /auth
 	const authController = require('./controllers/authController');
@@ -25,7 +21,7 @@ module.exports = (router) => {
 	router.post('/task',						...taskController.insertTask);
 	router.post('/task/:id',					...taskController.editTask);
 	router.delete('/task/:id',					...taskController.deleteTask);
-	router.get('/folder/:id/tasks',				...taskController.listTasksByFolder);
+	router.get('/task/findByFolder/:id',		...taskController.listTaskByFolder);
 
 	// /file
 	const fileController = require('./controllers/fileController');
