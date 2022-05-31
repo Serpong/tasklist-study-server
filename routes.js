@@ -1,8 +1,8 @@
 module.exports = (router) => {
 	
 	// for dev
-	const devController = require('./controllers/devController');
-	router.get('/',								...devController.devMain);
+	// const devController = require('./controllers/devController');
+	// router.get('/',								...devController.devMain);
 
 	// /auth
 	const authController = require('./controllers/authController');
@@ -27,24 +27,9 @@ module.exports = (router) => {
 	router.delete('/task/:id',					...taskController.deleteTask);
 	router.get('/folder/:id/tasks',				...taskController.listTasksByFolder);
 
-	// /photos
-	const photoController = require('./controllers/photoController');
-	router.get('/photo',						...photoController.listPhoto);
-	router.get('/photo/:id',					...photoController.getPhoto);
-	router.post('/photo',						...photoController.insertPhoto);
-	router.delete('/photo/:id',					...photoController.deletePhoto);
-
 	// /file
 	const fileController = require('./controllers/fileController');
 	router.get('/image/:id',					...fileController.showImage);
-
-	// /challenges
-	const challengeController = require('./controllers/challengeController');
-	router.get('/challenge',					...challengeController.listChallenge);
-	router.get('/challenge/:id',				...challengeController.getChallenge);
-	router.post('/challenge',					...challengeController.insertChallenge);
-	router.delete('/challenge/:id',				...challengeController.deleteChallenge);
-
 
 	return router;
 }
