@@ -46,7 +46,7 @@ FolderModel.statics.format = function(folderRow){
 		_id			: folderRow._id,
 		title		: folderRow.title,
 		description	: folderRow.description,
-		thumbUrl	: "/image/"+folderRow.thumb,
+		thumbUrl	: process.env.URL_IMAGES+folderRow.thumb,
 		// user		: folderRow.user,
 	};
 

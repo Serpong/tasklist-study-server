@@ -9,23 +9,23 @@ module.exports = (router) => {
 
 	// /folders
 	const folderController = require('./controllers/folderController');
-	router.get('/folder',						...folderController.listFolder);
-	router.get('/folder/:id',					...folderController.getFolder);
-	router.post('/folder',						...folderController.insertFolder);
-	router.delete('/folder/:id',				...folderController.deleteFolder);
+	router.get('/folders',						...folderController.listFolder);
+	router.get('/folders/:id',					...folderController.getFolder);
+	router.post('/folders',						...folderController.insertFolder);
+	router.delete('/folders/:id',				...folderController.deleteFolder);
 	
 	// /tasks
 	const taskController = require('./controllers/taskController');
-	router.get('/task',							...taskController.listTask);
-	router.get('/task/:id',						...taskController.getTask);
-	router.post('/task',						...taskController.insertTask);
-	router.post('/task/:id',					...taskController.editTask);
-	router.delete('/task/:id',					...taskController.deleteTask);
-	router.get('/task/findByFolder/:id',		...taskController.listTaskByFolder);
+	router.get('/tasks',						...taskController.listTask);
+	router.get('/tasks/:id',					...taskController.getTask);
+	router.post('/tasks',						...taskController.insertTask);
+	router.post('/tasks/:id',					...taskController.editTask);
+	router.delete('/tasks/:id',					...taskController.deleteTask);
+	router.get('/tasks/findByFolder/:id',		...taskController.listTaskByFolder);
 
 	// /file
 	const fileController = require('./controllers/fileController');
-	router.get('/image/:id',					...fileController.showImage);
+	router.get('/images/:id',					...fileController.showImage);
 
 	return router;
 }
